@@ -1,0 +1,324 @@
+/* Fonts */
+@font-face {
+    font-family: "SpaceGrotesk-R";
+    src: url(../../assests/Fonts/SpaceGrotesk-Regular.ttf);
+}
+@font-face {
+    font-family: "SpaceGrotesk-M";
+    src: url(../../assests/Fonts/SpaceGrotesk-Medium.ttf);
+}
+@font-face {
+    font-family: "SpaceGrotesk-B";
+    src: url(../../assests/Fonts/SpaceGrotesk-Bold.ttf);
+}
+@font-face {
+    font-family: "SpaceGrotesk-XB";
+    src: url(../../assests/Fonts/SpaceGrotesk-SemiBold.ttf);
+}
+
+/* Common */
+*{
+    font-family: "SpaceGrotesk-M";
+    margin: 0;
+    padding: 0;
+}
+html{
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+:root{
+    --primary-clr: tomato;
+    --white-clr: #FFFFFF;
+    --black-clr: #333333;
+}
+button{
+    padding: 10px 40px 11px;
+    border-radius: 8px;
+    font-size: 18px;
+    outline: none !important;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+button.primary-button{
+    background-color: var(--primary-clr);
+    border: 1px solid var(--primary-clr);
+    color: var(--white-clr);
+}
+button.secondary-button{
+    background-color: transparent;
+    border: 1px solid var(--primary-clr);
+    color: var(--primary-clr);
+}
+::-webkit-scrollbar{
+    width: 16px;
+}
+::-webkit-scrollbar-track{
+    background-color: var(--white-clr);
+}
+::-webkit-scrollbar-thumb{
+    background-color: var(--primary-clr);
+    border-radius: 10px;
+    border: 3px solid var(--white-clr);
+}
+/* Header */
+header {
+    padding: 15px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: var(--white-clr);
+    z-index: 10;
+    transition: all 0.25s ease;
+}
+header.active{
+    padding: 18px 20px;
+    color: var(--primary-clr);
+    background-color: var(--white-clr);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+header.active .nav-links a{
+    color: var(--black-clr);
+}
+header nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: auto;
+}
+header nav .nav-links{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+header nav .nav-links a{
+    padding: 8px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--white-clr);
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    font-size: 16px;
+    transition: background-color 0.25s ease, color 0.25s ease 0.1s, box-shadow 0.25s ease, transform 0.25s ease;
+}
+header nav .nav-links a:hover{
+    background-color: var(--primary-clr);
+    color: var(--white-clr);
+    box-shadow: -1px 6px 20px rgba(255, 99, 71, 0.8);
+    transform: translateY(-2px) scale(1.1);
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* Banner */
+section.banner{
+}
+section.banner .banner-container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://images.unsplash.com/photo-1505253758473-96b7015fcd40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1900&q=80");
+    background-position: center;
+    background-color: rgb(0, 0, 0, 0.7);
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: var(--white-clr);
+}
+section.banner .banner-container p{
+    font-size: 26px;
+    margin: 0;
+}
+section.banner .banner-container h1{
+    font-family: "SpaceGrotesk-B";
+    font-size: 60px;
+}
+section.banner .banner-container span{
+    font-size: 20px;
+}
+section.banner .banner-container button{
+    font-size: 22px;
+    margin-top: 20px;
+    backdrop-filter: blur(5px);
+}
+section.banner .banner-container button:hover{
+    border-color: var(--white-clr);
+    background-color: transparent;
+}
+
+/* Our Bundles */
+section.bundles {
+    margin: auto;
+    max-width: 1400px;
+    padding: 20px;
+}
+section.bundles h2{
+    color: var(--primary-clr);
+    font-family: "SpaceGrotesk-B";
+}
+section.bundles .bundles-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+/* Template */
+.template{
+    display: grid;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #f1f1f1;
+    border-radius: 18px;
+    transition: all 0.25s ease;
+}
+.template:hover{
+    box-shadow: -2px 10px 20px rgb(0, 0, 0, 0.1);
+}
+.template .swiper{
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+.template .swiper .swiper-pagination {
+    background-image: linear-gradient(to bottom, transparent, #000000);
+    bottom: 0;
+    padding: 10px;
+}
+.template .swiper .swiper-pagination .swiper-pagination-bullet{
+    background-color: var(--white-clr);
+}
+.template .swiper :is(.swiper-button-prev, .swiper-button-next){
+    width: auto;
+    height: auto;
+}
+.template .swiper :is(.swiper-button-prev, .swiper-button-next)::after{
+    font-size: 20px;
+    color: var(--white-clr);
+}
+.template .swiper .swiper-wrapper .swiper-slide{
+    width: 100% !important;
+    min-height: 100px;
+}
+.template a{
+    overflow: hidden;
+    display: block;
+}
+.template img{
+    width: 100%;
+    aspect-ratio: 1;
+    transition: all 1.5s ease;
+}
+.template img:hover{
+    transform: scale(1.05);
+}
+.template .buttons-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Contact us */
+section.contact-us{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding: 50px 20px;
+    background-image: url("https://images.unsplash.com/photo-1519624014191-508652cbd7b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1931&q=80");
+    background-position: center;
+    background-size: cover;
+    background-color: rgb(0, 0, 0, 0.7);
+    background-blend-mode: overlay;
+}
+section.contact-us p{
+    font-size: 18px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--white-clr);
+    text-align: center;
+}
+section.contact-us p a{
+    color: var(--primary-clr);
+}
+section.contact-us h2{
+    font-size: 50px;
+    font-family: "SpaceGrotesk-B";
+    color: var(--white-clr);
+}
+section.contact-us button{
+    font-size: 22px;
+    backdrop-filter: blur(5px);
+}
+section.contact-us button:hover{
+    border-color: var(--white-clr);
+    background-color: transparent;
+}
+
+/* Details */
+section.details-layout{
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    background-color: #F4F5F6;
+    padding: 20px;
+    max-width: 1400px;
+    margin: auto;
+    padding-top: 100px;
+    gap: 20px;
+}
+section.details-layout .left-details{
+    padding-right: 20px;
+}
+section.details-layout .right-details{
+    background-color: var(--white-clr);
+    border-radius: 15px;
+    box-shadow: -2px 10px 20px rgb(0, 0, 0, 0.1);
+    padding: 20px;
+}
+section.details-layout .right-details img{
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 15px;
+}
+section.details-layout .right-details .price-title{
+    font-size: 22px;
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+section.details-layout .right-details .price{
+    font-size: 32px;
+    font-family: "SpaceGrotesk-B";
+}
+section.details-layout .right-details .price span{
+    font-size: 20px;
+    color: #FF0042;
+    margin-left: 10px;
+}
+section.details-layout .right-details .secure-payments{
+    font-size: 22px;
+    margin-top: 10px;
+}
+section.details-layout .right-details .license{
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+section.details-layout .right-details .license-points{
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+/* footer */
+footer{
+    background-color: var(--black-clr);
+    color: var(--white-clr);
+    padding: 8px 20px;
+}
+footer p{
+    margin: 0;
+    text-align: center;
+}

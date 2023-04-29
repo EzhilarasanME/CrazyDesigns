@@ -3,20 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.312.0",
+    "@aws-sdk/client-s3": "^3.321.1",
+    "@aws-sdk/client-sns": "^3.312.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "aws-sdk": "^2.1358.0",
+    "aws-sdk-js-codemod": "^0.14.1",
+    "razorpay": "^2.8.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-responsive-carousel": "^3.2.23",
+    "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",
+    "swiper": "^9.2.4",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext ts,tsx,js,jsx"
   },
   "eslintConfig": {
     "extends": [
