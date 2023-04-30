@@ -1,3 +1,10 @@
+@media print {
+    html,
+    body {
+       display: none;
+    }
+ }
+
 /* Fonts */
 @font-face {
     font-family: "SpaceGrotesk-R";
@@ -120,7 +127,7 @@ section.banner .banner-container{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url("https://images.unsplash.com/photo-1505253758473-96b7015fcd40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1900&q=80");
+    background-image: url("https://i.ibb.co/SVCgBkb/Bgimage.jpg");
     background-position: center;
     background-color: rgb(0, 0, 0, 0.7);
     background-size: cover;

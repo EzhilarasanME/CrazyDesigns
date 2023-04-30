@@ -1,5 +1,5 @@
 import "./App.css";
-import MainPage from "./component/mainPage/MainPage.js";
+import MainPage from "./component/mainPage/MainPage.jsx";
 import DetailsPage from "./component/mainPage/DetailsPage.js";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { urlConstants } from "./model/Constant.ts";
