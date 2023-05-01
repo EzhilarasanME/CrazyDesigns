@@ -157,7 +157,7 @@ function MainPage() {
       {/* Banner */}
       <section className="banner" id="home">
         <div className="banner-container">
-          <p>Animated Templates</p>
+          <p>Crazy Designs</p>
           <h1>Create Amazing Videos For</h1>
           <span>
             Digital menu board, instagram stories, social media posts and more.
@@ -285,7 +285,7 @@ function MainPage() {
 
       {/* Footer */}
       <footer>
-        <p>copy rights reserved</p>
+        <p>ALL RIGHTS RESERVED © CRAZY DESIGNS - 2022</p>
       </footer>
     </>
   );
