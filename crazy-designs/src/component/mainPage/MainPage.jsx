@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import run from "../../backend/GetItems.js";
-import "./style.css";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, Autoplay } from "swiper";
+import { useNavigate } from "react-router-dom";
 
 // Import Swiper styles
 import "swiper/css";
@@ -24,7 +23,7 @@ function loadScript(src) {
 }
 
 function MainPage() {
-  const [name, setName] = useState("Mehul");
+  const Navigate = useNavigate();
 
   const jsondata = {
     bundleList: [
@@ -38,6 +37,7 @@ function MainPage() {
           "https://i.ibb.co/jyc0W9J/Slide5.png",
         ],
         price: "999",
+        id: 1,
       },
       {
         title: "Ice Cream menu template Vertical",
@@ -54,6 +54,7 @@ function MainPage() {
           "https://i.ibb.co/fx96ttW/Slide10.png",
         ],
         price: "999",
+        id: 2,
       },
     ],
   };
@@ -108,13 +109,9 @@ function MainPage() {
         alert(response.razorpay_payment_id);
       },
     };
+    // @ts-ignore
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
-  };
-
-  const callDynamodb = () => {
-    debugger;
-    run();
   };
 
   window.addEventListener("scroll", function () {
@@ -127,11 +124,18 @@ function MainPage() {
     }
   });
 
-  const DetailPage1 = () => {
+  const onclickDetailView = (event) => {
     debugger;
-    console.log("DetailPage1");
+    const buttonValue = event.target.value;
+
+    const dataa = jsondata.bundleList.filter(
+      (x) => x.id === Number(buttonValue)
+    );
+
+    Navigate("/CrazyDesign/DetailsPage", { state: dataa[0] });
     // Window.location.href = "http://localhost:3000/CrazyDesign/DetailsPage";
   };
+
   return (
     <>
       {/* <h1>crazy Designs</h1>
@@ -142,7 +146,10 @@ function MainPage() {
       <header>
         <nav>
           <div className="logo-holder">
-            <img src={require("./images/food-images/logo.png")} alt="Not found" />
+            <img
+              src={require("./images/food-images/logo.png")}
+              alt="Not found"
+            />
           </div>
           <div className="nav-links">
             <a href="#home">Home</a>
@@ -201,8 +208,14 @@ function MainPage() {
                 </Swiper>
                 <p>{x.title}</p>
                 <div className="buttons-wrap">
-                  <button className="secondary-button">More Details</button>
-                  <button  data-price={x.price} className="primary-button">
+                  <button
+                    value={x.id}
+                    onClick={onclickDetailView}
+                    className="secondary-button"
+                  >
+                    More Details
+                  </button>
+                  <button data-price={x.price} className="primary-button">
                     Buy Now
                   </button>
                 </div>

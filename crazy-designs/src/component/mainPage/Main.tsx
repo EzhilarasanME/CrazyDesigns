@@ -1,7 +1,6 @@
 import { IRazorpayConfig, Razorpay } from "razorpay-typescript";
 import {
   IRazorOrder,
-  IRazorOrderId,
   RazorOrders,
 } from "razorpay-typescript/dist/resources/order";
 import React from "react";
@@ -10,16 +9,16 @@ import useRazorpay, { RazorpayOptions } from "react-razorpay";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { SwiperSlide, Swiper } from "swiper/react";
 import "./style.css";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Pagination, Navigation, Autoplay } from "swiper";
+ 
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { Navigate } from "react-router-dom";
 export default function Main() {
   debugger;
-  const Razorpay1 = useRazorpay();
+  const RazorpayType = useRazorpay();
   const jsondata = {
     bundleList: [
       {
@@ -55,7 +54,6 @@ export default function Main() {
   };
 
   const handlePayment = useCallback(async () => {
-    debugger;
 
     const options: RazorpayOptions = {
       key: "rzp_test_GKIy23FWyASw2m",
@@ -107,7 +105,7 @@ export default function Main() {
 
     // options.order_id = (await getorderId).id;
 
-    const rzpay = new Razorpay1(options);
+    const rzpay = new RazorpayType(options);
 
     rzpay.on("payment.failed", function (response) {
       alert(response.error.code);
@@ -119,13 +117,24 @@ export default function Main() {
       alert(response.error.metadata.payment_id);
     });
     rzpay.open();
-  }, [Razorpay1]);
+  }, [RazorpayType]);
+
+  const onclickDetailView = (event) => {
+    debugger;
+    const buttonValue = event.target.value;
+
+    const dataa = jsondata.bundleList.filter(
+      (x) => x.id === Number(buttonValue)
+    );
+
+    Navigate({ to :"/CrazyDesign/DetailsPage",  state: dataa[0] });
+  };
 
   return (
     <>
       {/* <h1>crazy Designs</h1>
-    <button onClick={displayRazorpay}> Buy Now</button>
-    <button onClick={callDynamodb}>call dynamodb</button> */}
+      <button onClick={displayRazorpay}> Buy Now</button>
+      <button onClick={callDynamodb}>call dynamodb</button> */}
 
       {/* Header  */}
       <header>
@@ -149,7 +158,7 @@ export default function Main() {
       {/* Banner */}
       <section className="banner" id="home">
         <div className="banner-container">
-          <p>Animated Templates</p>
+          <p>Crazy Designs</p>
           <h1>Create Amazing Videos For</h1>
           <span>
             Digital menu board, instagram stories, social media posts and more.
@@ -165,89 +174,55 @@ export default function Main() {
       <section className="bundles" id="templates">
         <h2>Our Bundles</h2>
         <div className="bundles-container">
-          <div className="template">
-            <Swiper
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-              }}
-              pagination={{
-                clickable: true,
-              }}
-              navigation={true}
-              modules={[Autoplay, Pagination, Navigation]}
-              loop={true}
-              className="mySwiper"
-            >
-              <>
-                <SwiperSlide>
-                  <img
-                    alt="Not found"
-                    src={"https://i.ibb.co/9WwR4KL/Slide1.png"}
-                  />
-                </SwiperSlide>
-              </>
-            </Swiper>
-            <p>aaa</p>
-            <div className="buttons-wrap">
-              <button className="secondary-button">More Details</button>
-              <button
-                onClick={handlePayment}
-                data-price="123"
-                className="primary-button"
-              >
-                Buy Now
-              </button>
-            </div>
-          </div>
+          {jsondata.bundleList.map((x) => {
+            return (
+              <div className="template">
+                <Swiper
+                  autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  }}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  navigation={true}
+                  modules={[Autoplay, Pagination, Navigation]}
+                  loop={true}
+                  className="mySwiper"
+                >
+                  {x.imageLinks.map((y) => {
+                    return (
+                      <>
+                        <SwiperSlide>
+                          <img alt="Not found" src={y} />
+                        </SwiperSlide>
+                      </>
+                    );
+                  })}
+                </Swiper>
+                <p>{x.title}</p>
+                <div className="buttons-wrap">
+                  <button
+                    value={x.id}
+                    onClick={onclickDetailView}
+                    className="secondary-button"
+                  >
+                    More Details
+                  </button>
+                  <button onClick={handlePayment} data-price={x.price} className="primary-button">
+                    Buy Now
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
-
+      {/* Individual templates
       <section className="bundles" id="templates">
-        <h2>Our Bundles</h2>
-        <div className="bundles-container">
-          <div className="template">
-            <Swiper
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-              }}
-              pagination={{
-                clickable: true,
-              }}
-              navigation={true}
-              modules={[Autoplay, Pagination, Navigation]}
-              loop={true}
-              className="mySwiper"
-            >
-              <>
-                <SwiperSlide>
-                  <img
-                    alt="Not found"
-                    src={"https://i.ibb.co/9WwR4KL/Slide1.png"}
-                  />
-                </SwiperSlide>
-              </>
-            </Swiper>
-            <p>aaa</p>
-            <div className="buttons-wrap">
-              <button className="secondary-button">More Details</button>
-              <button
-                onClick={handlePayment}
-                data-price="123"
-                className="primary-button"
-              >
-                Buy Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Individual templates */}
-      {/* <section className="bundles" id="templates1">
         <h2>Individual Templates</h2>
         <div className="bundles-container">
-          {[13, 22, 334].map((x) => {
+          {[1, 2, 3].map((x) => {
             return (
               <div className="template">
                 <Swiper
@@ -317,7 +292,7 @@ export default function Main() {
 
       {/* Footer */}
       <footer>
-        <p>copy rights reserved</p>
+        <p>ALL RIGHTS RESERVED © CRAZY DESIGNS - 2022</p>
       </footer>
     </>
   );

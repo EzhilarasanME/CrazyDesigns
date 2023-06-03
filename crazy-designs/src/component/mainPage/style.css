@@ -217,6 +217,7 @@ section.bundles .bundles-container{
     width: 100%;
     aspect-ratio: 1;
     transition: all 1.5s ease;
+    object-fit: fill;
 }
 .template img:hover{
     transform: scale(1.05);
