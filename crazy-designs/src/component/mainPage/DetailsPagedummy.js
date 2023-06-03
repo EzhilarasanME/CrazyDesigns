@@ -5,7 +5,7 @@ import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { urlConstants } from "../../model/Constant.ts";
+import { urlConstants } from "../../model/Constant";
 import { useLocation } from "react-router-dom";
 
 

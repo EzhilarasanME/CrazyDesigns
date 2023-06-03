@@ -9,49 +9,16 @@ import useRazorpay, { RazorpayOptions } from "react-razorpay";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { SwiperSlide, Swiper } from "swiper/react";
 import "./style.css";
- 
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Navigate } from "react-router-dom";
-export default function Main() {
-  debugger;
+import { useLocation } from "react-router-dom";
+export default function ViewDetail() {
+    debugger
+  const { state } = useLocation();
   const RazorpayType = useRazorpay();
-  const jsondata = {
-    bundleList: [
-      {
-        id: 1,
-        title: "Digital menu template horizontal",
-        imageLinks: [
-          "https://i.ibb.co/20zbhcy/Slide1.png",
-          "https://i.ibb.co/JcdYwF2/Slide2.png",
-          "https://i.ibb.co/QbkJH80/Slide3.png",
-          "https://i.ibb.co/N3cngjp/Slide4.png",
-          "https://i.ibb.co/jyc0W9J/Slide5.png",
-        ],
-        price: "999",
-      },
-      {
-        id: 2,
-        title: "Ice Cream menu template Vertical",
-        imageLinks: [
-          "https://i.ibb.co/9WwR4KL/Slide1.png",
-          "https://i.ibb.co/8KfbmFT/Slide2.png",
-          "https://i.ibb.co/0cjLnrs/Slide3.png",
-          "https://i.ibb.co/q1W293k/Slide4.png",
-          "https://i.ibb.co/8MfNj4x/Slide5.png",
-          "https://i.ibb.co/cT27rvZ/Slide6.png",
-          "https://i.ibb.co/G7vxWVW/Slide7.png",
-          "https://i.ibb.co/cLHt5SC/Slide8.png",
-          "https://i.ibb.co/7rpNgfQ/Slide9.png",
-          "https://i.ibb.co/fx96ttW/Slide10.png",
-        ],
-        price: "999",
-      },
-    ],
-  };
 
   const handlePayment = useCallback(async () => {
 
@@ -118,18 +85,7 @@ export default function Main() {
     });
     rzpay.open();
   }, [RazorpayType]);
-
-  const onclickDetailView = (event) => {
-    debugger;
-    const buttonValue = event.target.value;
-
-    const dataa = jsondata.bundleList.filter(
-      (x) => x.id === Number(buttonValue)
-    );
-Navigate("/CrazyDesign/ViewDetail");
-    // Navigate({ to :"/CrazyDesign/ViewDetail",  state: dataa[0] });
-  };
-
+  
   return (
     <>
       {/* <h1>crazy Designs</h1>
@@ -174,48 +130,47 @@ Navigate("/CrazyDesign/ViewDetail");
       <section className="bundles" id="templates">
         <h2>Our Bundles</h2>
         <div className="bundles-container">
-          {jsondata.bundleList.map((x) => {
-            return (
-              <div className="template">
-                <Swiper
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    clickable: true,
-                  }}
-                  navigation={true}
-                  modules={[Autoplay, Pagination, Navigation]}
-                  loop={true}
-                  className="mySwiper"
-                >
-                  {x.imageLinks.map((y) => {
-                    return (
-                      <>
-                        <SwiperSlide>
-                          <img alt="Not found" src={y} />
-                        </SwiperSlide>
-                      </>
-                    );
-                  })}
-                </Swiper>
-                <p>{x.title}</p>
-                <div className="buttons-wrap">
-                  <button
-                    value={x.id}
-                    onClick={onclickDetailView}
-                    className="secondary-button"
-                  >
-                    More Details
-                  </button>
-                  <button onClick={handlePayment} data-price={x.price} className="primary-button">
-                    Buy Now
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          <div className="template">
+            <Swiper
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Autoplay, Pagination, Navigation]}
+              loop={true}
+              className="mySwiper"
+            >
+              {state.imageLinks.map((y) => {
+                return (
+                  <>
+                    <SwiperSlide>
+                      <img alt="Not found" src={y} />
+                    </SwiperSlide>
+                  </>
+                );
+              })}
+            </Swiper>
+            <p>{state.title}</p>
+            <div className="buttons-wrap">
+              {/* <button
+                value={state.id}
+                className="secondary-button"
+              >
+                Add to cart
+              </button> */}
+              <button
+                onClick={handlePayment}
+                data-price={state.price}
+                className="primary-button"
+              >
+                Buy Now
+              </button>
+            </div>
+          </div>
         </div>
       </section>
       {/* Individual templates
