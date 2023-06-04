@@ -3,58 +3,115 @@ import {
   IRazorOrder,
   RazorOrders,
 } from "razorpay-typescript/dist/resources/order";
-import React from "react";
-import { useCallback } from "react";
-import useRazorpay, { RazorpayOptions } from "react-razorpay";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { SwiperSlide, Swiper } from "swiper/react";
-import "./style.css";
- 
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Navigate } from "react-router-dom";
+import cloneDeep from "lodash/cloneDeep";
+import { v4 as uuidv4 } from "uuid";
+import useRazorpay, { RazorpayOptions } from "react-razorpay";
+import SearchIcon from "../../assests/Images/search.png"
+import "./style.css";
+
+const jsondata = {
+  bundleList: [
+    {
+      id: 11,
+      title: "Digital menu template horizontal",
+      imageLinks: [
+        "https://i.ibb.co/20zbhcy/Slide1.png",
+        "https://i.ibb.co/JcdYwF2/Slide2.png",
+        "https://i.ibb.co/QbkJH80/Slide3.png",
+        "https://i.ibb.co/N3cngjp/Slide4.png",
+        "https://i.ibb.co/jyc0W9J/Slide5.png",
+      ],
+      price: "999",
+      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
+    },
+    {
+      id: 12,
+      title: "Digital menu template horizontal",
+      imageLinks: [
+        "https://i.ibb.co/20zbhcy/Slide1.png",
+        "https://i.ibb.co/JcdYwF2/Slide2.png",
+        "https://i.ibb.co/QbkJH80/Slide3.png",
+        "https://i.ibb.co/N3cngjp/Slide4.png",
+        "https://i.ibb.co/jyc0W9J/Slide5.png",
+      ],
+      price: "999",
+      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
+    },
+    {
+      id: 13,
+      title: "Digital menu template horizontal",
+      imageLinks: [
+        "https://i.ibb.co/20zbhcy/Slide1.png",
+        "https://i.ibb.co/JcdYwF2/Slide2.png",
+        "https://i.ibb.co/QbkJH80/Slide3.png",
+        "https://i.ibb.co/N3cngjp/Slide4.png",
+        "https://i.ibb.co/jyc0W9J/Slide5.png",
+      ],
+      price: "999",
+      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
+    },
+    {
+      id: 14,
+      title: "Digital menu template horizontal",
+      imageLinks: [
+        "https://i.ibb.co/20zbhcy/Slide1.png",
+        "https://i.ibb.co/JcdYwF2/Slide2.png",
+        "https://i.ibb.co/QbkJH80/Slide3.png",
+        "https://i.ibb.co/N3cngjp/Slide4.png",
+        "https://i.ibb.co/jyc0W9J/Slide5.png",
+      ],
+      price: "999",
+      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
+    },
+    {
+      id: 15,
+      title: "Digital menu template horizontal",
+      imageLinks: [
+        "https://i.ibb.co/20zbhcy/Slide1.png",
+        "https://i.ibb.co/JcdYwF2/Slide2.png",
+        "https://i.ibb.co/QbkJH80/Slide3.png",
+        "https://i.ibb.co/N3cngjp/Slide4.png",
+        "https://i.ibb.co/jyc0W9J/Slide5.png",
+      ],
+      price: "999",
+      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
+    }    
+  ],
+};
+
 export default function Main() {
-  debugger;
   const RazorpayType = useRazorpay();
-  const jsondata = {
-    bundleList: [
-      {
-        id: 1,
-        title: "Digital menu template horizontal",
-        imageLinks: [
-          "https://i.ibb.co/20zbhcy/Slide1.png",
-          "https://i.ibb.co/JcdYwF2/Slide2.png",
-          "https://i.ibb.co/QbkJH80/Slide3.png",
-          "https://i.ibb.co/N3cngjp/Slide4.png",
-          "https://i.ibb.co/jyc0W9J/Slide5.png",
-        ],
-        price: "999",
-      },
-      {
-        id: 2,
-        title: "Ice Cream menu template Vertical",
-        imageLinks: [
-          "https://i.ibb.co/9WwR4KL/Slide1.png",
-          "https://i.ibb.co/8KfbmFT/Slide2.png",
-          "https://i.ibb.co/0cjLnrs/Slide3.png",
-          "https://i.ibb.co/q1W293k/Slide4.png",
-          "https://i.ibb.co/8MfNj4x/Slide5.png",
-          "https://i.ibb.co/cT27rvZ/Slide6.png",
-          "https://i.ibb.co/G7vxWVW/Slide7.png",
-          "https://i.ibb.co/cLHt5SC/Slide8.png",
-          "https://i.ibb.co/7rpNgfQ/Slide9.png",
-          "https://i.ibb.co/fx96ttW/Slide10.png",
-        ],
-        price: "999",
-      },
-    ],
-  };
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  const inputRef = useRef(null);
+
+  const clonedJsondata = useMemo(() => {
+    debugger
+    if (searchValue) {
+      const filteredList = jsondata.bundleList.filter((x) =>
+        x.title.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      if(filteredList.length > 0){
+
+        return { bundleList: filteredList };
+      }
+      return null
+    }
+    return cloneDeep(jsondata);
+  }, [searchValue]);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [clonedJsondata]);
 
   const handlePayment = useCallback(async () => {
-
     const options: RazorpayOptions = {
       key: "rzp_test_GKIy23FWyASw2m",
       amount: "135600",
@@ -119,15 +176,52 @@ export default function Main() {
     rzpay.open();
   }, [RazorpayType]);
 
-  const onclickDetailView = (event) => {
-    debugger;
-    const buttonValue = event.target.value;
+  // const onclickDetailView = (event) => {
+  //     const buttonValue = event.target.value;
 
-    const dataa = jsondata.bundleList.filter(
-      (x) => x.id === Number(buttonValue)
-    );
-Navigate("/CrazyDesign/ViewDetail");
-    // Navigate({ to :"/CrazyDesign/ViewDetail",  state: dataa[0] });
+  //     const dataa = jsondata.bundleList.filter(
+  //       (x) => x.id === Number(buttonValue)
+  //     );
+
+  //     navigate("/CrazyDesign/ViewDetail", {
+  //       state: dataa[0],
+  //     });
+  //   },
+  //   [navigate];
+
+  const onclickDetailView = useCallback(
+    (event) => {
+      const buttonValue = event.target.value;
+
+      const dataa = jsondata.bundleList.filter(
+        (x) => x.id === Number(buttonValue)
+      );
+      navigate("/CrazyDesign/ViewDetail", {
+        state: dataa[0],
+      });
+    },
+    [jsondata.bundleList, navigate]
+  );
+
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);
+    inputRef.current.focus();
+  };
+
+  const onClickSearch = () => {
+    debugger;
+    // if (searchValue) {
+    //   const filteredList = jsondata.bundleList.filter((x) =>
+    //     x.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+    //   );
+    //   if (filteredList) {
+    //     clonedJsondata({ bundleList: filteredList });
+    //   } else {
+    //     clonedJsondata(null);
+    //   }
+    // } else {
+    //   clonedJsondata(cloneDeep(jsondata));
+    // }
   };
 
   return (
@@ -139,17 +233,17 @@ Navigate("/CrazyDesign/ViewDetail");
       {/* Header  */}
       <header>
         <nav>
-          <div className="logo-holder">
+          <div key={uuidv4()} className="logo-holder">
             <img
               src={require("./images/food-images/logo.png")}
               alt="Not found"
             />
           </div>
-          <div className="nav-links">
+          <div key={uuidv4()} className="nav-links">
             <a href="#home">Home</a>
             <a href="#templates">Templates</a>
-            <a href="#features">Features</a>
-            <a href="#faq">Faq</a>
+            {/* <a href="#features">Features</a>
+            <a href="#faq">Faq</a> */}
             <a href="#contact">Contact</a>
           </div>
         </nav>
@@ -157,15 +251,27 @@ Navigate("/CrazyDesign/ViewDetail");
 
       {/* Banner */}
       <section className="banner" id="home">
-        <div className="banner-container">
+        <div key={uuidv4()} className="banner-container">
           <p>Crazy Designs</p>
           <h1>Create Amazing Videos For</h1>
           <span>
             Digital menu board, instagram stories, social media posts and more.
             enjoy!
           </span>
+          <div className="search-field">
+            <input
+              type="text"
+              value={searchValue}
+              ref={inputRef}
+              onChange={handleInputChange}
+              placeholder="Search..."
+            ></input>
+            <img src={SearchIcon} alt="" />
+          </div>
           <a href="#templates">
-            <button className="primary-button">Browse Templates</button>
+            <button onClick={onClickSearch} className="primary-button">
+              Browse Templates
+            </button>
           </a>
         </div>
       </section>
@@ -173,108 +279,74 @@ Navigate("/CrazyDesign/ViewDetail");
       {/* Our Bundles */}
       <section className="bundles" id="templates">
         <h2>Our Bundles</h2>
-        <div className="bundles-container">
-          {jsondata.bundleList.map((x) => {
-            return (
-              <div className="template">
-                <Swiper
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    clickable: true,
-                  }}
-                  navigation={true}
-                  modules={[Autoplay, Pagination, Navigation]}
-                  loop={true}
-                  className="mySwiper"
-                >
-                  {x.imageLinks.map((y) => {
-                    return (
-                      <>
-                        <SwiperSlide>
-                          <img alt="Not found" src={y} />
-                        </SwiperSlide>
-                      </>
-                    );
-                  })}
-                </Swiper>
-                <p>{x.title}</p>
-                <div className="buttons-wrap">
-                  <button
-                    value={x.id}
-                    onClick={onclickDetailView}
-                    className="secondary-button"
-                  >
-                    More Details
-                  </button>
-                  <button onClick={handlePayment} data-price={x.price} className="primary-button">
-                    Buy Now
-                  </button>
+        <p className="hint-text">Click <span>"View Detail"</span> for a better visual representation.</p>
+        <form onSubmit={handlePayment}>
+          <div key={uuidv4()} className="bundles-container">
+            {clonedJsondata != null ? (
+              clonedJsondata.bundleList.map((x, index) => {
+                debugger;
+                return (
+                  <div key={uuidv4()} className="template">
+                    <Swiper
+                      key={uuidv4()}
+                      // autoplay={{
+                      //   delay: 2500,
+                      //   disableOnInteraction: false,
+                      // }}
+                      pagination={{
+                        clickable: true,
+                      }}
+                      navigation={true}
+                      modules={[Autoplay, Pagination, Navigation]}
+                      loop={true}
+                      className="mySwiper"
+                    >
+                      {x.imageLinks.map((y) => {
+                        return (
+                          <>
+                            <SwiperSlide key={uuidv4()}>
+                              <img alt="Not found" src={y} />
+                            </SwiperSlide>
+                          </>
+                        );
+                      })}
+                      <SwiperSlide key={uuidv4()}>
+                        <iframe
+                          src={x.videoLink}
+                          title="YouTube video player"
+                        ></iframe>
+                      </SwiperSlide>
+                    </Swiper>
+                    <p>{x.title}</p>
+                    <div key={uuidv4()} className="buttons-wrap">
+                      <button
+                        value={x.id}
+                        onClick={onclickDetailView}
+                        className="secondary-button"
+                      >
+                        More Details
+                      </button>
+                      <button
+                        onClick={handlePayment}
+                        data-price={x.price}
+                        className="primary-button"
+                      >
+                        Buy Now
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <div>
+                  <p>No result found</p>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              </>
+            )}
+          </div>
+        </form>
       </section>
-      {/* Individual templates
-      <section className="bundles" id="templates">
-        <h2>Individual Templates</h2>
-        <div className="bundles-container">
-          {[1, 2, 3].map((x) => {
-            return (
-              <div className="template">
-                <Swiper
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    clickable: true,
-                  }}
-                  navigation={true}
-                  modules={[Autoplay, Pagination, Navigation]}
-                  loop={true}
-                  className="mySwiper"
-                >
-                  <SwiperSlide>
-                    <img
-                      alt="Not found"
-                      src="https://templates-mini-image.s3.ap-south-1.amazonaws.com/Slide1.PNG?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEG4aCmFwLXNvdXRoLTEiRzBFAiEAmAhQaDvisQM22Yqo798nHwDjlO5Kgyq4k0A2j5gsWbcCIEI73hK9N2wgu%2FA%2F%2B%2F7NKXq8KPEXjfB%2Fa75teIEM4xWWKugCCHcQABoMNjU5ODczMjk0ODkwIgwwYhF%2FRF9LsJJP5fgqxQJd1OLCDx5WDWQFe%2BakY%2FNaMBPl3gHOxKTRCdmmDhX8VF2Yw1X8XE5Gampb3sYq%2FvKiFLTBkwgG8wC1Y%2FZnOIXTjWodPJgLbwQKaIIFCIF3oSXOmBa1GZWlaTwAZnKw7P8CmFJ%2FgbTxdvSGibbXgR2jHVJuUGoFNpILk41b7vIuMGSUKQkqNuYcViJ%2FumM9pRVOJhYY0nf6uNqo%2F6UOUOtXFDsN674P6%2BUPgDAk6tBC07J0eF7%2FX35asUv1QGEWY2a9JXpIkyPSSELFTGFmAgkrKTU94%2FyuxxMPZJuWcV7cJTyf%2BnUJmUW6kwGp5r0PX1GV%2Bdw9h9dIj%2Btpz2%2F2EaYwj6Pf2UYPb%2Bz02QA76LbpmSbOt9LaEXbGr45AxBtg1AkeLoRWUvlvh00EmEfk%2FVAirazgdKEp%2B2hFZc9CFNRyVBZkiP7RMLzDtKIGOrMCYhiIEp1%2FYX7K8IgZ2bdoo%2FbeTviZYEnGsVRDLlWfcOWWj1IFmogvyTH6UkEVHmorj%2B%2FxsuuJNHR7RkASrx99zxkewdTrRxgSybIdstUxBnLZ5UijjxnrcHPI2vo6mb6MkYFGGbDT73DijH5uD1ZJim8HyvPzXSG7H6wJgy6pHnu2D3fMfxk5q2MuhRvBQmqrcWOoGxuiDE3NmNcsUVHs4suxvsaSDgEdZbMsEV2rzyFsr%2BFPCKOcBUGl%2B9XD%2Bdn29YWHMwzt0i8QmOJPCEkhyASZ7MP5FBBZLeEx1IlVCTrphsF5hf%2F4whoVZwKT8Kr6tq%2BZh5myLWiNHqIvuvcFhnHj%2BtVCuN%2Bh9z8GxcYqxLXg8mXbe0JCgrkFP9f66vrZexw1GSHMT06Oz76IK%2FRt%2FyAtGw%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230429T163154Z&X-Amz-SignedHeaders=host&X-Amz-Expires=18000&X-Amz-Credential=ASIAZTI4DNIVI4TJ6R5V%2F20230429%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Signature=e53198abe3b76fdaaa0057953fff1a3144ddd730c8654fd37b48ccfa7d2efaa0"
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img
-                      src={require("https://templates-mini-image.s3.ap-south-1.amazonaws.com/Slide1.PNG?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEG4aCmFwLXNvdXRoLTEiRzBFAiEAmAhQaDvisQM22Yqo798nHwDjlO5Kgyq4k0A2j5gsWbcCIEI73hK9N2wgu%2FA%2F%2B%2F7NKXq8KPEXjfB%2Fa75teIEM4xWWKugCCHcQABoMNjU5ODczMjk0ODkwIgwwYhF%2FRF9LsJJP5fgqxQJd1OLCDx5WDWQFe%2BakY%2FNaMBPl3gHOxKTRCdmmDhX8VF2Yw1X8XE5Gampb3sYq%2FvKiFLTBkwgG8wC1Y%2FZnOIXTjWodPJgLbwQKaIIFCIF3oSXOmBa1GZWlaTwAZnKw7P8CmFJ%2FgbTxdvSGibbXgR2jHVJuUGoFNpILk41b7vIuMGSUKQkqNuYcViJ%2FumM9pRVOJhYY0nf6uNqo%2F6UOUOtXFDsN674P6%2BUPgDAk6tBC07J0eF7%2FX35asUv1QGEWY2a9JXpIkyPSSELFTGFmAgkrKTU94%2FyuxxMPZJuWcV7cJTyf%2BnUJmUW6kwGp5r0PX1GV%2Bdw9h9dIj%2Btpz2%2F2EaYwj6Pf2UYPb%2Bz02QA76LbpmSbOt9LaEXbGr45AxBtg1AkeLoRWUvlvh00EmEfk%2FVAirazgdKEp%2B2hFZc9CFNRyVBZkiP7RMLzDtKIGOrMCYhiIEp1%2FYX7K8IgZ2bdoo%2FbeTviZYEnGsVRDLlWfcOWWj1IFmogvyTH6UkEVHmorj%2B%2FxsuuJNHR7RkASrx99zxkewdTrRxgSybIdstUxBnLZ5UijjxnrcHPI2vo6mb6MkYFGGbDT73DijH5uD1ZJim8HyvPzXSG7H6wJgy6pHnu2D3fMfxk5q2MuhRvBQmqrcWOoGxuiDE3NmNcsUVHs4suxvsaSDgEdZbMsEV2rzyFsr%2BFPCKOcBUGl%2B9XD%2Bdn29YWHMwzt0i8QmOJPCEkhyASZ7MP5FBBZLeEx1IlVCTrphsF5hf%2F4whoVZwKT8Kr6tq%2BZh5myLWiNHqIvuvcFhnHj%2BtVCuN%2Bh9z8GxcYqxLXg8mXbe0JCgrkFP9f66vrZexw1GSHMT06Oz76IK%2FRt%2FyAtGw%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230429T163154Z&X-Amz-SignedHeaders=host&X-Amz-Expires=18000&X-Amz-Credential=ASIAZTI4DNIVI4TJ6R5V%2F20230429%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Signature=e53198abe3b76fdaaa0057953fff1a3144ddd730c8654fd37b48ccfa7d2efaa0")}
-                      alt="Not found"
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img
-                      alt="Not found"
-                      src="https://www.powerpointvideoads.com/wp-content/themes/pva/img/mega-pack-post-18.jpg"
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img
-                      alt="Not found"
-                      src="https://www.powerpointvideoads.com/wp-content/themes/pva/img/mega-pack-post-18.jpg"
-                    />
-                  </SwiperSlide>
-                </Swiper>
-                <p>
-                  MEGA PACK DIGITAL MENU BOARDS - POWERPOINT ANIMATED TEMPLATES
-                </p>
-                <div className="buttons-wrap">
-                  <button className="secondary-button">More Details</button>
-                  <button className="primary-button">Buy Now</button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section> */}
 
       {/* Contact us */}
       <section className="contact-us" id="contact">

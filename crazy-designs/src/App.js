@@ -6,17 +6,16 @@ import { urlConstants } from "./model/Constant.ts";
 import React from "react";
 
 function App() {
-  debugger
   return (
     <BrowserRouter>
       <Routes>
-        <Route
+        <Route key={4}
           path="/"
           element={<Navigate to={urlConstants.baseUrl} />}
         ></Route>
         <Route key={1} path={urlConstants.baseUrl} element={<Main />} />
         <Route key={2} path={urlConstants.detailPageUrl} element={<ViewDetail />} />
-        <Route key={3} path={urlConstants.home} element={<Main />} />
+        {/* <Route key={3} path={urlConstants.home} element={<Main />} /> */}
       </Routes>
     </BrowserRouter>
   );
