@@ -10,10 +10,11 @@ module.exports = function override(config, env) {
     os: require.resolve("os-browserify"),
     url: require.resolve("url"),
     tls: false,
-    path: false,
+    path: require.resolve("path"),
     fs: false,
     net: false,
     zlib: false,
+    polyfill:require.resolve("polyfill")
   };
   config.plugins.push(
     new webpack.ProvidePlugin({
