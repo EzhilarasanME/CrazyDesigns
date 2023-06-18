@@ -19,7 +19,6 @@ import { v4 as uuidv4 } from "uuid";
 import Paypal from "./Paypal.jsx";
 
 export default function ViewDetail() {
-  ;
   const navigate = useNavigate();
   const { state } = useLocation();
   const RazorpayType = useRazorpay();
