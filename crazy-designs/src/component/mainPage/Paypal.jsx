@@ -57,25 +57,25 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
               },
             })
             .then((orderId) => {
-              // debugger
+              // 
               console.log(orderId);
               // Your code here after create the order
               return orderId;
             });
         }}
         onApprove={function (data, actions) {
-          // debugger
+          // 
           console.log(data, actions);
 
           return actions.order.capture().then(function (data) {
-            // debugger
+            // 
             if(data.status === 'COMPLETED'){
               alert("Order placed successfully.You get a templates via email.")
             }else{
               alert("Something went wrong payment not completed")
             }
             console.log(data);
-            // Your code here after capture the order
+            // Your code here after cadepture the order
           });
         }}
       />
@@ -84,7 +84,7 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
 };
 
 export default function Paypal() {
-  debugger;
+  ;
   return (
     <div style={{ maxWidth: "750px", minHeight: "200px", minWidth: "300px" }}>
       <PayPalScriptProvider

@@ -19,7 +19,7 @@ import { v4 as uuidv4 } from "uuid";
 import Paypal from "./Paypal.jsx";
 
 export default function ViewDetail() {
-  debugger;
+  ;
   const navigate = useNavigate();
   const { state } = useLocation();
   const RazorpayType = useRazorpay();
@@ -76,7 +76,7 @@ export default function ViewDetail() {
 
     // const getorderId: Promise<IRazorOrderId> = orderId.create(params);
     // getorderId.then(function (result) {
-    //   debugger
+    //   
     //   return (result);
     // })
 
