@@ -57,18 +57,15 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
               },
             })
             .then((orderId) => {
-              // 
               console.log(orderId);
               // Your code here after create the order
               return orderId;
             });
         }}
         onApprove={function (data, actions) {
-          // 
           console.log(data, actions);
 
           return actions.order.capture().then(function (data) {
-            // 
             if(data.status === 'COMPLETED'){
               alert("Order placed successfully.You get a templates via email.")
             }else{
@@ -84,7 +81,6 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
 };
 
 export default function Paypal() {
-  ;
   return (
     <div style={{ maxWidth: "750px", minHeight: "200px", minWidth: "300px" }}>
       <PayPalScriptProvider

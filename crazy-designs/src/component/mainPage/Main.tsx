@@ -186,12 +186,10 @@ export default function Main() {
   const client = new PayPalHttpClient.core.PayPalHttpClient(environment);
 
   const handlePaymentPaypal = async () => {
-    ;
     createOrder();
   };
 
   const createOrder = async () => {
-    ;
     const request = new PayPalHttpClient.orders.OrdersCreateRequest();
     request.prefer("return=representation");
     request.requestBody({
@@ -207,12 +205,10 @@ export default function Main() {
     });
 
     try {
-      ;
       const response = await client.execute(request);
       console.log(response.result);
       // Capture the order and perform further processing
     } catch (error) {
-      ;
       console.error(error);
     }
   };
@@ -227,7 +223,6 @@ export default function Main() {
       );
 
       if (dataa?.length > 0) {
-        ;
         setTemplateName(dataa[0].title);
         setAmount(dataa[0].amount);
         navigate("/CrazyDesign/ViewDetail", {
