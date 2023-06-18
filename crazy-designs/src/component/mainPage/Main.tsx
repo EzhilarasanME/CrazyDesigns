@@ -155,7 +155,7 @@ export default function Main() {
 
     // const getorderId: Promise<IRazorOrderId> = orderId.create(params);
     // getorderId.then(function (result) {
-    //   debugger
+    //   
     //   return (result);
     // })
 
@@ -186,12 +186,12 @@ export default function Main() {
   const client = new PayPalHttpClient.core.PayPalHttpClient(environment);
 
   const handlePaymentPaypal = async () => {
-    debugger;
+    ;
     createOrder();
   };
 
   const createOrder = async () => {
-    debugger;
+    ;
     const request = new PayPalHttpClient.orders.OrdersCreateRequest();
     request.prefer("return=representation");
     request.requestBody({
@@ -207,19 +207,19 @@ export default function Main() {
     });
 
     try {
-      debugger;
+      ;
       const response = await client.execute(request);
       console.log(response.result);
       // Capture the order and perform further processing
     } catch (error) {
-      debugger;
+      ;
       console.error(error);
     }
   };
 
   const onclickDetailView = useCallback(
     (event) => {
-      debugger
+      
       const buttonValue = event.target.value;
 
       const dataa = jsondata.bundleList.filter(
@@ -227,7 +227,7 @@ export default function Main() {
       );
 
       if (dataa?.length > 0) {
-        debugger;
+        ;
         setTemplateName(dataa[0].title);
         setAmount(dataa[0].amount);
         navigate("/CrazyDesign/ViewDetail", {

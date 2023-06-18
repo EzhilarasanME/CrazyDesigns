@@ -60,7 +60,7 @@ function MainPage() {
   };
 
   const displayRazorpay = () => {
-    debugger;
+    ;
     const res = loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
     if (!res) {
@@ -125,7 +125,7 @@ function MainPage() {
   });
 
   const onclickDetailView = (event) => {
-    debugger;
+    ;
     const buttonValue = event.target.value;
 
     const dataa = jsondata.bundleList.filter(
