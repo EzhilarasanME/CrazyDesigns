@@ -439,6 +439,10 @@ footer p{
     text-align: center;
 }
 
+.zindex {
+    z-index: 101;
+}
+
 @media (max-width: 760px) {
     section.bundles .bundles-container.vertical-dual{
         grid-template-columns: 1fr 1fr;

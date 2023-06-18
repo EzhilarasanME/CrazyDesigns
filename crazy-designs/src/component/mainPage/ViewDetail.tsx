@@ -3,7 +3,7 @@ import {
   IRazorOrder,
   RazorOrders,
 } from "razorpay-typescript/dist/resources/order";
-import React from "react";
+import React, { useEffect } from "react";
 import { useCallback } from "react";
 import useRazorpay, { RazorpayOptions } from "react-razorpay";
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -14,14 +14,24 @@ import "./style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import Paypal from "./Paypal.jsx";
+
 export default function ViewDetail() {
-    debugger
+  debugger;
+  const navigate = useNavigate();
   const { state } = useLocation();
   const RazorpayType = useRazorpay();
 
-  const handlePayment = useCallback(async () => {
+  useEffect(() => {
+    if(state === null || state === undefined){
+      navigate("/CrazyDesign/Main");
+    }
+  }, [navigate, state])
+  
 
+  const handlePayment = useCallback(async () => {
     const options: RazorpayOptions = {
       key: "rzp_test_GKIy23FWyASw2m",
       amount: "135600",
@@ -85,7 +95,7 @@ export default function ViewDetail() {
     });
     rzpay.open();
   }, [RazorpayType]);
-  
+
   return (
     <>
       {/* <h1>crazy Designs</h1>
@@ -93,7 +103,7 @@ export default function ViewDetail() {
       <button onClick={callDynamodb}>call dynamodb</button> */}
 
       {/* Header  */}
-      <header>
+      <header className="zindex">
         <nav>
           <div className="logo-holder">
             <img
@@ -102,10 +112,8 @@ export default function ViewDetail() {
             />
           </div>
           <div className="nav-links">
-            <a href="#home">Home</a>
-            <a href="#templates">Templates</a>
-            <a href="#features">Features</a>
-            <a href="#faq">Faq</a>
+            <a href="/CrazyDesign/main">Home</a>
+            <a href="/CrazyDesign/main">Templates</a>
             <a href="#contact">Contact</a>
           </div>
         </nav>
@@ -117,10 +125,10 @@ export default function ViewDetail() {
         <div className="bundles-container vertical-dual">
           <div className="template">
             <Swiper
-            //   autoplay={{
-            //     delay: 2500,
-            //     disableOnInteraction: false,
-            //   }}
+              //   autoplay={{
+              //     delay: 2500,
+              //     disableOnInteraction: false,
+              //   }}
               pagination={{
                 clickable: true,
               }}
@@ -129,58 +137,56 @@ export default function ViewDetail() {
               loop={true}
               className="mySwiper"
             >
-              {state.imageLinks.map((y) => {
+              {state.imageLinks.horizontal.map((y,index) => {
                 return (
                   <>
-                    <SwiperSlide>
+                    <SwiperSlide key={index}>
                       <img alt="Not found" src={y} />
                     </SwiperSlide>
                   </>
                 );
               })}
+              <SwiperSlide key={uuidv4()}>
+                <iframe
+                  src={state.videoLink}
+                  title="YouTube video player"
+                ></iframe>
+              </SwiperSlide>
             </Swiper>
             <p>{state.title}</p>
           </div>
-          <div className="template vertical">
-            <Swiper
-              pagination={{
-                clickable: true,
-              }}
-              navigation={true}
-              modules={[Autoplay, Pagination, Navigation]}
-              loop={true}
-              className="mySwiper"
-            >
-              {state.imageLinks.map((y) => {
-                return (
-                  <>
-                    <SwiperSlide>
-                      <img alt="Not found" src="https://i.ibb.co/9WwR4KL/Slide1.png" />
-                    </SwiperSlide>
-                  </>
-                );
-              })}
-            </Swiper>
-            <p>{state.title}</p>
-          </div>
-          <div className="bundle-btn-wrap">
-              {/* <button
-                value={state.id}
-                className="secondary-button"
+          {state.imageLinks.vertical.length > 0 ? (
+            <div className="template">
+              <Swiper
+                pagination={{
+                  clickable: true,
+                }}
+                navigation={true}
+                modules={[Autoplay, Pagination, Navigation]}
+                loop={true}
+                className="mySwiper"
               >
-                Add to cart
-              </button> */}
-              <button
-                onClick={handlePayment}
-                data-price={state.price}
-                className="primary-button"
-              >
-                Buy Now
-              </button>
+                {state.imageLinks.vertical.map((z) => {
+                  return (
+                    <>
+                      <SwiperSlide key={uuidv4()} >
+                        <img alt="Not found" src={z} />
+                      </SwiperSlide>
+                    </>
+                  );
+                })}
+              </Swiper>
+              <p>{state.title}</p>
             </div>
+          ) : (
+            <></>
+          )}
+
+          <div className="bundle-btn-wrap">
+          <Paypal></Paypal>
+          </div>
         </div>
       </section>
-      
 
       {/* Contact us */}
       <section className="contact-us" id="contact">
