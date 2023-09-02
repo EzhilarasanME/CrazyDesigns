@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
+    "allowImportingTsExtensions": true,
     "checkJs": false,
     "jsx": "react",
     "paths": {

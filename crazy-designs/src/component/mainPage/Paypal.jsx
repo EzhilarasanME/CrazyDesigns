@@ -1,44 +1,76 @@
-import { useEffect, useContext } from "react";
+import { useState } from "react";
 import {
   PayPalScriptProvider,
   PayPalButtons,
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
-import TemplateContext from "../../shared/customProvider/TemplateContext";
+import { useTemplateContext } from "context/GetTemplate/TemplateContext.tsx";
 
 // This values are the props in the UI
 // const amount = "7.00";
 const currency = "USD";
 
-
 // Custom component to wrap the PayPalButtons and handle currency changes
 const ButtonWrapper = ({ currency, showSpinner }) => {
   // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
   // This is the main reason to wrap the PayPalButtons in a new component
-  const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
-  const { templateName, amount } = useContext(TemplateContext);
-  const style = { layout: "vertical" };
+  const [{ isPending }, dispatch] =
+    usePayPalScriptReducer();
+  const {viewDetailInput} = useTemplateContext()
+  const style = { layout: "vertical", label: "pay" };
+
   // if(!(Number(amount) > 0)){
   //   amount = "7.00"
   // }
 
-  useEffect(() => {
-    dispatch({
-      type: "resetOptions",
-      value: {
-        ...options,
-        currency: currency,
-      },
-    });
-  }, [currency, showSpinner]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "resetOptions",
+  //     value: {
+  //       ...options,
+  //       currency: currency,
+  //     },
+  //   });
+  // }, [currency, dispatch, options]);
+
+  //   const   {
+  //     register,
+  //     handleSubmit,
+  //     formState: { errors },
+  // } = useForm();
+
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  console.log("isEmailValid", isEmailValid);
+  const emailOnchange = (value) => {
+    debugger;
+    if (!value.target.value) {
+      setIsEmailValid(false);
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value.target.value)) {
+      setIsEmailValid(false);
+    }else{
+      setIsEmailValid(true);
+    }
+  };
 
   return (
     <>
       {showSpinner && isPending && <div className="spinner" />}
+
+      <div>Enter the emailId : {"  "}</div>
+      <input
+        onChange={(e) => emailOnchange(e)}
+        style={{
+          width: "100%",
+          marginBottom: "4px",
+        }}
+        type="text"
+      ></input>
+      {!isEmailValid && <div style={{ color:"red" }}>Invalid email address</div>}
+ 
       <PayPalButtons
+        disabled={!isEmailValid}
         style={style}
-        disabled={false}
-        forceReRender={[amount, currency, style]}
+        forceReRender={[viewDetailInput.viewDetailData.amount, currency, style]}
         fundingSource={undefined}
         createOrder={(data, actions) => {
           return actions.order
@@ -47,13 +79,13 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
                 {
                   amount: {
                     currency_code: currency,
-                    value: amount,
+                    value: viewDetailInput.viewDetailData.amount,
                   },
                 },
               ],
               application_context: {
-                shipping_preference: 'NO_SHIPPING', // Exclude the billing address
-                custom: templateName,
+                shipping_preference: "NO_SHIPPING", // Exclude the billing address
+                custom: viewDetailInput.viewDetailData.title,
               },
             })
             .then((orderId) => {
@@ -66,10 +98,10 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
           console.log(data, actions);
 
           return actions.order.capture().then(function (data) {
-            if(data.status === 'COMPLETED'){
-              alert("Order placed successfully.You get a templates via email.")
-            }else{
-              alert("Something went wrong payment not completed")
+            if (data.status === "COMPLETED") {
+              alert("Order placed successfully.You get a templates via email.");
+            } else {
+              alert("Something went wrong payment not completed");
             }
             console.log(data);
             // Your code here after cadepture the order
@@ -85,7 +117,8 @@ export default function Paypal() {
     <div style={{ maxWidth: "750px", minHeight: "200px", minWidth: "300px" }}>
       <PayPalScriptProvider
         options={{
-          clientId: "AXBGMaJoIdv5dEVSMz-ZrWUXhXFdE1QDqPZWVCzV5Hn_wAspMXOC2qEwDE9zC-OxoALy5av7oSF3QIXG",
+          clientId:
+            "AXBGMaJoIdv5dEVSMz-ZrWUXhXFdE1QDqPZWVCzV5Hn_wAspMXOC2qEwDE9zC-OxoALy5av7oSF3QIXG",
           components: "buttons",
           currency: "USD",
         }}

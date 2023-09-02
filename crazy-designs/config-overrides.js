@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 module.exports = function override(config, env) {
   config.ignoreWarnings = [/Failed to parse source map/];
+  
   config.resolve.fallback = {
     crypto: false,
     stream: require.resolve("stream-browserify"),
@@ -14,7 +15,10 @@ module.exports = function override(config, env) {
     fs: false,
     net: false,
     zlib: false,
-    polyfill:require.resolve("polyfill")
+    polyfill:require.resolve("polyfill"),
+    constants: false,
+    vm: false,
+    child_process: false,
   };
   config.plugins.push(
     new webpack.ProvidePlugin({

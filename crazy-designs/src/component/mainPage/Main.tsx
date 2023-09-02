@@ -1,17 +1,9 @@
-import { IRazorpayConfig, Razorpay } from "razorpay-typescript";
-import {
-  IRazorOrder,
-  RazorOrders,
-} from "razorpay-typescript/dist/resources/order";
 import React, {
   useEffect,
   useMemo,
   useRef,
   useState,
-  useCallback,
-  useContext,
 } from "react";
-import { useNavigate } from "react-router-dom";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
@@ -19,79 +11,22 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import cloneDeep from "lodash/cloneDeep";
 import { v4 as uuidv4 } from "uuid";
-import useRazorpay, { RazorpayOptions } from "react-razorpay";
 import SearchIcon from "../../assests/Images/search.png";
 import "./style.css";
-import PayPalHttpClient from "@paypal/checkout-server-sdk";
-import dotenv from "dotenv";
-import path from "path";
 import Alert from "react-bootstrap/Alert";
 import { Button } from "react-bootstrap";
-import TemplateContext from "../../shared/customProvider/TemplateContext";
-
-const jsondata = {
-  bundleList: [
-    {
-      id: 11,
-      title: "Digital menu template horizontal",
-      imageLinks: {
-        vertical: [],
-        horizontal: [
-          "https://i.ibb.co/20zbhcy/Slide1.png",
-          "https://i.ibb.co/JcdYwF2/Slide2.png",
-          "https://i.ibb.co/QbkJH80/Slide3.png",
-          "https://i.ibb.co/N3cngjp/Slide4.png",
-          "https://i.ibb.co/jyc0W9J/Slide5.png",
-        ],
-      },
-      amount: "1.00",
-      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
-    },
-    {
-      id: 2,
-      title: "Ice Cream menu template Vertical",
-      imageLinks: {
-        vertical: [
-          "https://i.ibb.co/9WwR4KL/Slide1.png",
-          "https://i.ibb.co/8KfbmFT/Slide2.png",
-          "https://i.ibb.co/0cjLnrs/Slide3.png",
-          "https://i.ibb.co/q1W293k/Slide4.png",
-          "https://i.ibb.co/8MfNj4x/Slide5.png",
-          "https://i.ibb.co/cT27rvZ/Slide6.png",
-          "https://i.ibb.co/G7vxWVW/Slide7.png",
-          "https://i.ibb.co/cLHt5SC/Slide8.png",
-          "https://i.ibb.co/7rpNgfQ/Slide9.png",
-          "https://i.ibb.co/fx96ttW/Slide10.png",
-        ],
-        horizontal: [
-          "https://i.ibb.co/vLTzDXk/Slide2.png",
-          "https://i.ibb.co/J5337S5/Slide1.png",
-          "https://i.ibb.co/TT8kCz5/Slide3.png",
-          "https://i.ibb.co/SPVgFZB/Slide4.png",
-          "https://i.ibb.co/YhTMM9Q/Slide5.png",
-          "https://i.ibb.co/HDtmTk8/Slide6.png",
-          "https://i.ibb.co/3449ygr/Slide8.png",
-          "https://i.ibb.co/0MXLYmK/Slide7.png",
-          "https://i.ibb.co/59kknQF/Slide9.png",
-          "https://i.ibb.co/hmhBbXn/Slide10.png",
-        ],
-      },
-      amount: "7.00",
-      videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
-    },
-  ],
-};
+import ViewDetailModel from "./ViewDetailModel.tsx";
+import { useTemplateContext } from "context/GetTemplate/TemplateContext.tsx";
 
 export default function Main() {
-  const RazorpayType = useRazorpay();
-  const navigate = useNavigate();
+  const { templateData, setShowViewDetailModel, setViewDetailData,viewDetailInput } =
+    useTemplateContext();
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef(null);
-  const { setTemplateName, setAmount } = useContext(TemplateContext);
 
-  const clonedJsondata = useMemo(() => {
+  const clonedtemplateData = useMemo(() => {
     if (searchValue) {
-      const filteredList = jsondata.bundleList.filter((x) =>
+      const filteredList = templateData.bundleList.filter((x) =>
         x.title.toLowerCase().includes(searchValue.toLowerCase())
       );
       if (filteredList.length > 0) {
@@ -100,138 +35,31 @@ export default function Main() {
       return null;
     }
 
-    return cloneDeep(jsondata);
+    return cloneDeep(templateData);
   }, [searchValue]);
 
   useEffect(() => {
-    // dotenv.config({ path: path.resolve("../../../.env") });
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [searchValue]);
 
-  const handlePayment = useCallback(async () => {
-    const options: RazorpayOptions = {
-      key: "rzp_test_GKIy23FWyASw2m",
-      amount: "135600",
-      currency: "INR",
-      description: "Acme Corp",
-      image: "https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg",
-      prefill: {
-        email: "gaurav.kumar@example.com",
-        contact: "+919900000000",
-      },
-      config: {
-        display: {
-          language: "en",
-        },
-      },
-      handler: function (response) {
-        alert("Success");
-        alert(response.razorpay_payment_id);
-      },
-      name: "abc",
-      order_id: "",
-    };
-
-    const orderdetail: IRazorOrder = {
-      amount: 0,
-      currency: "",
-    };
-    const config: IRazorpayConfig = {
-      authKey: {
-        key_id: "rzp_test_GKIy23FWyASw2m",
-        key_secret: "oqJSmMsw98L7dVkjMEssKSIW",
-      },
-    };
-    const aa = new Razorpay(config);
-
-    const orderId = new RazorOrders(aa);
-
-    const params: IRazorOrder = {
-      amount: 0,
-      currency: "",
-    };
-
-    // const getorderId: Promise<IRazorOrderId> = orderId.create(params);
-    // getorderId.then(function (result) {
-    //   
-    //   return (result);
-    // })
-
-    // options.order_id = (await getorderId).id;
-
-    const rzpay = new RazorpayType(options);
-
-    rzpay.on("payment.failed", function (response) {
-      alert(response.error.code);
-      alert(response.error.description);
-      alert(response.error.source);
-      alert(response.error.step);
-      alert(response.error.reason);
-      alert(response.error.metadata.order_id);
-      alert(response.error.metadata.payment_id);
-    });
-    rzpay.open();
-  }, [RazorpayType]);
-
   //Paypal
   // Initialize PayPal client
   // const environment = new PayPalHttpClient.core.LiveEnvironment(process.env.REACT_APP_PAYPAL_CLIENT_ID_SANDBOX, process.env.REACT_APP_PAYPAL_CLIENT_SECRET_SANDBOX); // Use 'Production' for live environment
-  const environment = new PayPalHttpClient.core.SandboxEnvironment(
-    "AXBGMaJoIdv5dEVSMz-ZrWUXhXFdE1QDqPZWVCzV5Hn_wAspMXOC2qEwDE9zC-OxoALy5av7oSF3QIXG",
-    "ENcz7_omAPr3UUHVxbHczsRJnZ4v2a0YAzMa-qD2pyGC8PwNyfcknybk4m4yvMyIFj8Ar7fc1zO2NI1P"
-  ); // Use 'Production' for live environment
 
-  const client = new PayPalHttpClient.core.PayPalHttpClient(environment);
+  const onclickDetailView = (event) => {
+    const buttonValue = event.target.value;
 
-  const handlePaymentPaypal = async () => {
-    createOrder();
-  };
-
-  const createOrder = async () => {
-    const request = new PayPalHttpClient.orders.OrdersCreateRequest();
-    request.prefer("return=representation");
-    request.requestBody({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: "10.00",
-          },
-        },
-      ],
-    });
-
-    try {
-      const response = await client.execute(request);
-      console.log(response.result);
-      // Capture the order and perform further processing
-    } catch (error) {
-      console.error(error);
+    const dataa = templateData.bundleList.filter(
+      (x) => x.id === Number(buttonValue)
+    );
+    debugger;
+    if (dataa?.length > 0) {
+      setViewDetailData(dataa[0]);
+      setShowViewDetailModel(true);
     }
   };
-
-  const onclickDetailView = useCallback(
-    (event) => {
-      
-      const buttonValue = event.target.value;
-
-      const dataa = jsondata.bundleList.filter(
-        (x) => x.id === Number(buttonValue)
-      );
-
-      if (dataa?.length > 0) {
-        setTemplateName(dataa[0].title);
-        setAmount(dataa[0].amount);
-        navigate("/CrazyDesign/ViewDetail", {
-          state: dataa[0],
-        });
-      }
-    },
-    [navigate, setAmount, setTemplateName]
-  );
 
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);
@@ -328,9 +156,9 @@ export default function Main() {
 
         <form onSubmit={handleSubmit}>
           <div key={uuidv4()} className="">
-            {clonedJsondata != null ? (
+            {clonedtemplateData != null ? (
               <div key={uuidv4()} className="bundles-container">
-                {clonedJsondata.bundleList.map((x, index) => {
+                {clonedtemplateData.bundleList.map((x) => {
                   return (
                     <div
                       key={uuidv4()}
@@ -377,13 +205,13 @@ export default function Main() {
                         >
                           View Details
                         </button>
-                        {/* <button
-                        onClick={handlePaymentPaypal}
-                        data-amount={x.amount}
-                        className="primary-button"
-                      >
-                        Buy Now
-                      </button> */}
+                        <button
+                          value={x.id}
+                          onClick={onclickDetailView}
+                          className="primary-button"
+                        >
+                          Buy Now ${x.amount}
+                        </button>
                       </div>
                     </div>
                   );
@@ -434,6 +262,8 @@ export default function Main() {
       <footer>
         <p>ALL RIGHTS RESERVED © CRAZY DESIGNS - 2022</p>
       </footer>
+
+      {viewDetailInput.showViewDetailModel && <ViewDetailModel />}
     </>
   );
 }

@@ -1,6 +1,6 @@
 module.exports = {
     target: 'node',
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['*','.tsx', '.ts', '.js'],
       }
     };

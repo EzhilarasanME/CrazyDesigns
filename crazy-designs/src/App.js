@@ -2,10 +2,11 @@ import "./App.css";
 import ViewDetail from "./component/mainPage/ViewDetail.tsx";
 import Paypal from "./component/mainPage/Paypal.jsx";
 import Main from "./component/mainPage/Main.tsx";
+import SuccessModal from "./component/modals/SuccesModal.jsx";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { urlConstants } from "./model/Constant.ts";
 import React from "react";
-import TemplateProvider from './shared/customProvider/TemplateProvider';
+import {TemplateProvider} from "./context/GetTemplate/TemplateContext.tsx"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             element={<ViewDetail />}
           />
           <Route key={3} path={urlConstants.Paypal} element={<Paypal />} />
+          <Route key={4} path='/CrazyDesign/SuccessModal' element={<SuccessModal />} />
         </Routes>
       </BrowserRouter>
     </TemplateProvider>
