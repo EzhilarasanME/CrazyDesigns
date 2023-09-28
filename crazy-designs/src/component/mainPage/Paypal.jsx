@@ -14,9 +14,8 @@ const currency = "USD";
 const ButtonWrapper = ({ currency, showSpinner }) => {
   // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
   // This is the main reason to wrap the PayPalButtons in a new component
-  const [{ isPending }, dispatch] =
-    usePayPalScriptReducer();
-  const {viewDetailInput} = useTemplateContext()
+  const [{ isPending }, dispatch] = usePayPalScriptReducer();
+  const { viewDetailInput } = useTemplateContext();
   const style = { layout: "vertical", label: "pay" };
 
   // if(!(Number(amount) > 0)){
@@ -42,12 +41,13 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
   const [isEmailValid, setIsEmailValid] = useState(false);
   console.log("isEmailValid", isEmailValid);
   const emailOnchange = (value) => {
-    debugger;
     if (!value.target.value) {
       setIsEmailValid(false);
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value.target.value)) {
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value.target.value)
+    ) {
       setIsEmailValid(false);
-    }else{
+    } else {
       setIsEmailValid(true);
     }
   };
@@ -65,8 +65,10 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
         }}
         type="text"
       ></input>
-      {!isEmailValid && <div style={{ color:"red" }}>Invalid email address</div>}
- 
+      {!isEmailValid && (
+        <div style={{ color: "red" }}>Invalid email address</div>
+      )}
+
       <PayPalButtons
         disabled={!isEmailValid}
         style={style}

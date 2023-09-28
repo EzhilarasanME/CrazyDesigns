@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { defaultTemplateContextValue } from "./Constant.ts";
-import queryPosts from "Backend/GetTemplateList.ts";
+import { getTemplateList } from "Backend/GetRequest/GetTemplateList.ts";
+import { BundleList, TemplateContenxtType, TemplateData } from "./types.ts";
 
 const TemplateContext = React.createContext<TemplateContenxtType>(
   defaultTemplateContextValue
@@ -13,10 +14,72 @@ export const useTemplateContext = () => {
 interface TemplateProviderProps {
   children: React.ReactNode;
 }
-export const TemplateProvider = ({
-  children,
-}: TemplateProviderProps) => {
-  const jsondata: TemplateData = {
+export const TemplateProvider = ({ children }: TemplateProviderProps) => {
+  const [templateData, setTemplateData] = useState<TemplateData>({
+    bundleList: [],
+  });
+
+  // Set an initial loading state
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [viewDetailInput, setViewDetailInput] = useState<{
+    viewDetailData: BundleList | null;
+    showViewDetailModel: boolean;
+  }>({
+    viewDetailData: null,
+    showViewDetailModel: false,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getTemplateList();
+
+        const tempdata: BundleList[] = [];
+
+        if (data) {
+          data.forEach((item) => {
+            const existingBundle = tempdata?.find(
+              (bundle) => bundle.id === item.id
+            );
+
+            if (existingBundle) {
+              if (item.size_type === "horizontal") {
+                existingBundle.imageLinks.horizontal.push(item.image_link);
+              } else {
+                existingBundle.imageLinks.vertical.push(item.image_link);
+              }
+            } else {
+              const newBundle: BundleList = {
+                id: item.id,
+                title: item.template_name,
+                imageLinks: {
+                  vertical:
+                    item.size_type === "vertical" ? [item.image_link] : [],
+                  horizontal:
+                    item.size_type === "horizontal" ? [item.image_link] : [],
+                },
+                amount: item.amount,
+                videoLink: item.video_link,
+              };
+              tempdata.push(newBundle);
+            }
+            // return tempdata;
+          });
+
+          setTemplateData({ bundleList: tempdata });
+          debugger;
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    setIsLoading(false);
+  }, []);
+
+  let jsondata: TemplateData = {
     bundleList: [
       {
         id: 11,
@@ -69,33 +132,46 @@ export const TemplateProvider = ({
     ],
   };
 
-  const tempData: BundleList = null;
+  //   const [viewDetailInput, setViewDetailInput] = useState({viewDetailData : tempData,
+  // showViewDetailModel : false});
 
-  const [viewDetailInput, setViewDetailInput] = useState({viewDetailData : tempData,
-showViewDetailModel : false});
-
-const setViewDetailData = (value: BundleList) => {
+  const setViewDetailData = (value: BundleList) => {
     setViewDetailInput((current) => ({
       ...current,
       viewDetailData: value,
-    }))
-  }
+    }));
+  };
 
   const setShowViewDetailModel = (value: boolean) => {
     setViewDetailInput((current) => ({
       ...current,
       showViewDetailModel: value,
-    }))
-  }
+    }));
+  };
+
+  // const data = await queryPosts();
+  //
+  // if(data){
+  //   jsondata.bundleList = data.map((dataModel) => ({
+  //     id: dataModel.id,
+  //     title: dataModel.template_name,
+  //     imageLinks: {
+  //       vertical: dataModel.size_type === "vertical" ? [dataModel.image_link] : [],
+  //       horizontal: dataModel.size_type === "horizontal" ? [dataModel.image_link] : [],
+  //     },
+  //     amount: dataModel.amount,
+  //     videoLink: dataModel.video_link,
+  //   }));
+  // }
+  // console.log(data)
 
   const value: TemplateContenxtType = {
     viewDetailInput,
     setViewDetailData,
     setShowViewDetailModel,
-    templateData: jsondata,
+    templateData,
+    isLoading,
   };
-  
-  const data = queryPosts();
 
   return (
     <TemplateContext.Provider value={value}>

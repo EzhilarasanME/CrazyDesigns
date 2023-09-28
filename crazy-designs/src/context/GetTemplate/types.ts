@@ -1,20 +1,21 @@
-interface TemplateContenxtType {
+export interface TemplateContenxtType {
   viewDetailInput: viewDetailInputType
   setShowViewDetailModel: (newValue: boolean) => void;
   setViewDetailData: (newValue: BundleList) => void;
   templateData: TemplateData;
+  isLoading:boolean
 }
 
-interface viewDetailInputType{
+export interface viewDetailInputType{
   viewDetailData: BundleList,
   showViewDetailModel:boolean
 }
 
-interface TemplateData {
+export interface TemplateData {
   bundleList: BundleList[];
 }
 
-interface BundleList {
+export interface BundleList {
   id: number;
   title: string;
   imageLinks: ImageLinks;
@@ -22,7 +23,7 @@ interface BundleList {
   videoLink: string;
 }
 
-interface ImageLinks {
+export interface ImageLinks {
   vertical: string[];
   horizontal: string[];
 }

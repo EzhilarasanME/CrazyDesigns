@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
@@ -19,14 +14,19 @@ import ViewDetailModel from "./ViewDetailModel.tsx";
 import { useTemplateContext } from "context/GetTemplate/TemplateContext.tsx";
 
 export default function Main() {
-  const { templateData, setShowViewDetailModel, setViewDetailData,viewDetailInput } =
-    useTemplateContext();
+  const {
+    isLoading,
+    templateData,
+    setShowViewDetailModel,
+    setViewDetailData,
+    viewDetailInput,
+  } = useTemplateContext();
   const [searchValue, setSearchValue] = useState("");
   const inputRef = useRef(null);
 
   const clonedtemplateData = useMemo(() => {
     if (searchValue) {
-      const filteredList = templateData.bundleList.filter((x) =>
+      const filteredList = templateData.bundleList?.filter((x) =>
         x.title.toLowerCase().includes(searchValue.toLowerCase())
       );
       if (filteredList.length > 0) {
@@ -36,13 +36,15 @@ export default function Main() {
     }
 
     return cloneDeep(templateData);
-  }, [searchValue]);
+  }, [searchValue, templateData]);
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [searchValue]);
+
+  if (isLoading) return <>Loading</>;
 
   //Paypal
   // Initialize PayPal client
@@ -54,7 +56,7 @@ export default function Main() {
     const dataa = templateData.bundleList.filter(
       (x) => x.id === Number(buttonValue)
     );
-    debugger;
+
     if (dataa?.length > 0) {
       setViewDetailData(dataa[0]);
       setShowViewDetailModel(true);
@@ -76,6 +78,8 @@ export default function Main() {
     return false;
   }
 
+  if (isLoading) return <>Loading</>;
+  debugger;
   return (
     <>
       {/* Header  */}
@@ -158,7 +162,7 @@ export default function Main() {
           <div key={uuidv4()} className="">
             {clonedtemplateData != null ? (
               <div key={uuidv4()} className="bundles-container">
-                {clonedtemplateData.bundleList.map((x) => {
+                {clonedtemplateData.bundleList?.map((x) => {
                   return (
                     <div
                       key={uuidv4()}

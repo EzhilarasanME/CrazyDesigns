@@ -9,18 +9,19 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 import { v4 as uuidv4 } from "uuid";
 import { useTemplateContext } from "context/GetTemplate/TemplateContext.tsx";
 
-
 export default function ViewDetailModel() {
- 
-  const {viewDetailInput,setShowViewDetailModel}= useTemplateContext()
+  const { viewDetailInput, setShowViewDetailModel } = useTemplateContext();
 
   return (
-    <Modal show={viewDetailInput.showViewDetailModel}
-    onHide={() => setShowViewDetailModel(!viewDetailInput.showViewDetailModel)}
-    size="xl"
-     >
+    <Modal
+      show={viewDetailInput.showViewDetailModel}
+      onHide={() =>
+        setShowViewDetailModel(!viewDetailInput.showViewDetailModel)
+      }
+      size="xl"
+    >
       <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
+        <Modal.Title>{viewDetailInput.viewDetailData.title}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -40,15 +41,17 @@ export default function ViewDetailModel() {
               loop={true}
               className="mySwiper"
             >
-              {viewDetailInput.viewDetailData.imageLinks.horizontal.map((y, index) => {
-                return (
-                  <>
-                    <SwiperSlide key={index}>
-                      <img alt="Not found" src={y} />
-                    </SwiperSlide>
-                  </>
-                );
-              })}
+              {viewDetailInput.viewDetailData.imageLinks.horizontal.map(
+                (y, index) => {
+                  return (
+                    <>
+                      <SwiperSlide key={index}>
+                        <img alt="Not found" src={y} />
+                      </SwiperSlide>
+                    </>
+                  );
+                }
+              )}
               <SwiperSlide key={uuidv4()}>
                 <iframe
                   src={viewDetailInput.viewDetailData.videoLink}
