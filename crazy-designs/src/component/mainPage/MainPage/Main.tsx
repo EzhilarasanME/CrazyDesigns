@@ -6,12 +6,13 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import cloneDeep from "lodash/cloneDeep";
 import { v4 as uuidv4 } from "uuid";
-import SearchIcon from "../../assests/Images/search.png";
-import "./style.css";
+import SearchIcon from "../../../assests/Images/search.png";
+import "../../mainPage/style.css";
 import Alert from "react-bootstrap/Alert";
 import { Button } from "react-bootstrap";
-import ViewDetailModel from "./ViewDetailModel.tsx";
+import ViewDetailModel from "../ViewDetailModel.tsx";
 import { useTemplateContext } from "context/GetTemplate/TemplateContext.tsx";
+import DownloadPPT from "shared/DownloadPPT.tsx";
 
 export default function Main() {
   const {
@@ -25,6 +26,7 @@ export default function Main() {
   const inputRef = useRef(null);
 
   const clonedtemplateData = useMemo(() => {
+    
     if (searchValue) {
       const filteredList = templateData.bundleList?.filter((x) =>
         x.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -79,7 +81,7 @@ export default function Main() {
   }
 
   if (isLoading) return <>Loading</>;
-  debugger;
+  
   return (
     <>
       {/* Header  */}
@@ -87,7 +89,7 @@ export default function Main() {
         <nav>
           <div key={uuidv4()} className="logo-holder">
             <img
-              src={require("./images/food-images/logo.png")}
+              src={require("../images/food-images/logo.png")}
               alt="Not found"
             />
           </div>
@@ -164,6 +166,7 @@ export default function Main() {
               <div key={uuidv4()} className="bundles-container">
                 {clonedtemplateData.bundleList?.map((x) => {
                   return (
+                    x.imageLinks.horizontal?.length > 0 ?
                     <div
                       key={uuidv4()}
                       className={`template ${
@@ -217,7 +220,7 @@ export default function Main() {
                           Buy Now ${x.amount}
                         </button>
                       </div>
-                    </div>
+                    </div> : <></>
                   );
                 })}
               </div>

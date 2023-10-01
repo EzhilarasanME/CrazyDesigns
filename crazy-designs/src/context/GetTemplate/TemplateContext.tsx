@@ -68,7 +68,7 @@ export const TemplateProvider = ({ children }: TemplateProviderProps) => {
           });
 
           setTemplateData({ bundleList: tempdata });
-          debugger;
+          
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -126,14 +126,11 @@ export const TemplateProvider = ({ children }: TemplateProviderProps) => {
             "https://i.ibb.co/hmhBbXn/Slide10.png",
           ],
         },
-        amount: "7.00",
+        amount: "0.01",
         videoLink: "https://www.youtube.com/embed/AEzNmGJ7zWU",
       },
     ],
   };
-
-  //   const [viewDetailInput, setViewDetailInput] = useState({viewDetailData : tempData,
-  // showViewDetailModel : false});
 
   const setViewDetailData = (value: BundleList) => {
     setViewDetailInput((current) => ({
@@ -148,22 +145,6 @@ export const TemplateProvider = ({ children }: TemplateProviderProps) => {
       showViewDetailModel: value,
     }));
   };
-
-  // const data = await queryPosts();
-  //
-  // if(data){
-  //   jsondata.bundleList = data.map((dataModel) => ({
-  //     id: dataModel.id,
-  //     title: dataModel.template_name,
-  //     imageLinks: {
-  //       vertical: dataModel.size_type === "vertical" ? [dataModel.image_link] : [],
-  //       horizontal: dataModel.size_type === "horizontal" ? [dataModel.image_link] : [],
-  //     },
-  //     amount: dataModel.amount,
-  //     videoLink: dataModel.video_link,
-  //   }));
-  // }
-  // console.log(data)
 
   const value: TemplateContenxtType = {
     viewDetailInput,

@@ -16,7 +16,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import Paypal from "./Paypal.jsx";
+import Paypal from "./payment/Paypal.jsx";
 
 export default function ViewDetail() {
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ export default function ViewDetail() {
         <nav>
           <div className="logo-holder">
             <img
-              src={require("./images/food-images/logo.png")}
+              src={require("../mainPage/images/food-images/logo.png")}
               alt="Not found"
             />
           </div>

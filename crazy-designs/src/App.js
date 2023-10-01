@@ -1,7 +1,7 @@
 import "./App.css";
 import ViewDetail from "./component/mainPage/ViewDetail.tsx";
-import Paypal from "./component/mainPage/Paypal.jsx";
-import Main from "./component/mainPage/Main.tsx";
+import Paypal from "./component/mainPage/payment/Paypal.jsx";
+import Main from "./component/mainPage/MainPage/Main.tsx";
 import SuccessModal from "./component/modals/SuccesModal.jsx";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { urlConstants } from "./model/Constant.ts";
@@ -9,6 +9,7 @@ import React from "react";
 import {TemplateProvider} from "./context/GetTemplate/TemplateContext.tsx"
 
 function App() {
+  // set "NODE_ENV=prod" & npm run build
   return (
     <TemplateProvider>
       <BrowserRouter>

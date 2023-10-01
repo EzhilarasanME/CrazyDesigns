@@ -145,7 +145,7 @@ function MainPage() {
         <nav>
           <div className="logo-holder">
             <img
-              src={require("./images/food-images/logo.png")}
+              src={require("../images/food-images/logo.png")}
               alt="Not found"
             />
           </div>

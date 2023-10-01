@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Paypal from "./Paypal";
+import Paypal from "./payment/Paypal";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { v4 as uuidv4 } from "uuid";
 import { useTemplateContext } from "context/GetTemplate/TemplateContext.tsx";
