@@ -29,10 +29,10 @@ export default function ViewDetailModel() {
         <div className="bundles-container vertical-dual">
           <div className="template">
             <Swiper
-              //   autoplay={{
-              //     delay: 2500,
-              //     disableOnInteraction: false,
-              //   }}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
               pagination={{
                 clickable: true,
               }}

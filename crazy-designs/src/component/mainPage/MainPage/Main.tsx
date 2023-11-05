@@ -175,10 +175,10 @@ export default function Main() {
                     >
                       <Swiper
                         key={uuidv4()}
-                        // autoplay={{
-                        //   delay: 2500,
-                        //   disableOnInteraction: false,
-                        // }}
+                        autoplay={{
+                          delay: 2500,
+                          disableOnInteraction: false,
+                        }}
                         pagination={{
                           clickable: true,
                         }}
