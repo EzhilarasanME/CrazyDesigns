@@ -87,7 +87,7 @@ export default function Main() {
       {/* Header  */}
       <header className="zindex">
         <nav>
-          <div key={uuidv4()} className="logo-holder">
+          <div title="Crazy Designs" key={uuidv4()} className="logo-holder">
             <img
               src={require("../images/food-images/logo.png")}
               alt="Not found"

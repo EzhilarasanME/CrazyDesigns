@@ -135,8 +135,8 @@ header nav .nav-links a:hover{
 section.banner{
 }
 section.banner .banner-container{
-    height: calc(100vh - 94px);
-    margin-top: 94px;
+    height: calc(60vh - 107px);
+    /* margin-top: 94px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
